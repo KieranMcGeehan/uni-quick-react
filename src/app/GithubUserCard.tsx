@@ -1,6 +1,6 @@
 import styles from "./GithubUserCard.module.css";
 
-import { Suspense, use } from "react";
+import { Suspense } from "react";
 import { fetchUser } from "./githubApi";
 import { useQuery } from "@tanstack/react-query";
 

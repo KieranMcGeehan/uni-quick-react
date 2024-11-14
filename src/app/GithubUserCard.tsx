@@ -21,7 +21,7 @@ export default function GithubUserCard({ username }: GithubProfileProps) {
 function CardInner({ username }: GithubProfileProps) {
     const result = useQuery({
         queryKey: ["gh", username],
-        queryFn: (c) => fetchUser(username),
+        queryFn: () => fetchUser(username),
     });
     const user = result.data!;
 

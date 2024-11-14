@@ -7,13 +7,7 @@ import styles from "./page.module.css";
 import Form from 'next/form'
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      suspense: true
-    },
-  },
-})
+const queryClient = new QueryClient()
 
 export default function Home() {
   const [name, setName] = useState<string | null>(null);

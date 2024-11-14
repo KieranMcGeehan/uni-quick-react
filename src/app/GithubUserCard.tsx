@@ -2,7 +2,7 @@ import styles from "./GithubUserCard.module.css";
 
 import { Suspense } from "react";
 import { fetchUser } from "./githubApi";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 export type GithubProfileProps = {
     username: string,
@@ -19,11 +19,10 @@ export default function GithubUserCard({ username }: GithubProfileProps) {
 }
 
 function CardInner({ username }: GithubProfileProps) {
-    const result = useQuery({
+    const { data: user } = useSuspenseQuery({
         queryKey: ["gh", username],
         queryFn: () => fetchUser(username),
     });
-    const user = result.data!;
 
     const realName = !user.name ? username : user.name;
     return (

@@ -1,20 +1,33 @@
 import styles from "./GithubUserCard.module.css";
 
-import { use } from "react";
+import { Suspense, use } from "react";
 import { fetchUser } from "./githubApi";
-import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
 
 export type GithubProfileProps = {
     username: string,
 }
 
 export default function GithubUserCard({ username }: GithubProfileProps) {
-    const user = use(fetchUser(username));
-    console.log(user);
+    return (
+        <div className={styles.usercard}>
+            <Suspense>
+                <CardInner username={username}/>
+            </Suspense>
+        </div>
+    );
+}
+
+function CardInner({ username }: GithubProfileProps) {
+    const result = useQuery({
+        queryKey: ["gh", username],
+        queryFn: (c) => fetchUser(username),
+    });
+    const user = result.data!;
 
     const realName = !user.name ? username : user.name;
     return (
-        <div className={styles.usercard}>
+        <>
             <center>
                 <img src={user.avatar_url} className={styles.avatar}></img><br/>
                 <a href={user.html_url}>
@@ -30,6 +43,6 @@ export default function GithubUserCard({ username }: GithubProfileProps) {
                 </em>
             }
             {user.followers} followers, {user.following} following - {user.public_gists} gists, {user.public_repos} repositories 
-        </div>
+        </>
     );
 }
